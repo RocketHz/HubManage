@@ -4,18 +4,18 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  name: string;
+  name: string = '';
 
   @IsString()
   @MaxLength(500)
-  description: string;
+  description: string = '';
 
   @IsNumber()
   @Min(0)
-  price: number;
+  price: number = 0;
 
   @IsNumber()
   @Min(0)
-  stock: number;
+  stock: number = 0;
 }
 

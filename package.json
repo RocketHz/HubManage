@@ -7,16 +7,42 @@
   ],
   "scripts": {
     "start": "npm run start --workspace=backend",
+    "start:backend": "npm run start --workspace=backend",
+    "start:frontend": "npm run start --workspace=frontend",
+    "start:all": "npm-run-all --parallel start:backend start:frontend",
     "dev:backend": "npm run dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "lint": "npm run lint --workspaces"
+    "dev": "npm-run-all --parallel dev:*",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build": "npm-run-all build:*",
+    "clean:backend": "rimraf packages/backend/dist",
+    "clean:frontend": "rimraf packages/frontend/build",
+    "clean:modules": "rimraf node_modules && rimraf packages/*/node_modules",
+    "clean": "npm-run-all clean:backend clean:frontend",
+    "clean:all": "npm-run-all clean clean:modules",
+    "test:backend": "npm run test --workspace=backend",
+    "test:frontend": "npm run test --workspace=frontend",
+    "test": "npm-run-all test:*",
+    "lint:backend": "npm run lint --workspace=backend",
+    "lint:frontend": "npm run lint --workspace=frontend",
+    "lint": "npm-run-all lint:*",
+    "install:all": "npm install && npm install --workspaces --legacy-peer-deps",
+    "reset": "npm run clean:all && npm run install:all",
+    "version": "lerna version",
+    "publish": "lerna publish",
+    "new-version": "lerna version --conventional-commits --yes",
+    "changed": "lerna changed"
   },
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "lerna": "^8.2.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^5.0.1"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  }
 }
-

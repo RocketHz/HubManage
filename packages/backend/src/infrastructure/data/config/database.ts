@@ -1,10 +1,10 @@
-import { createConnection, Connection, ConnectionOptions } from 'typeorm';
+import { createConnection, Connection, DataSourceOptions } from 'typeorm';
 import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
 
-const config: ConnectionOptions = {
+const config: DataSourceOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432', 10),
@@ -19,9 +19,7 @@ const config: ConnectionOptions = {
   migrations: [
     __dirname + '/../migrations/*.{ts,js}'
   ],
-  cli: {
-    migrationsDir: 'src/infrastructure/data/migrations'
-  }
+  // Remove CLI configuration as it's no longer supported
 };
 
 export const initializeDatabase = async (): Promise<Connection> => {

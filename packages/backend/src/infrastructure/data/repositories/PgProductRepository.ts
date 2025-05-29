@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { Product } from '../../../core/products/entities/Product';
 import { IProductRepository } from '../../../application/products/interfaces/IProductRepository';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Between } from 'typeorm';
 
 @injectable()
 export class PgProductRepository implements IProductRepository {
@@ -28,10 +28,7 @@ export class PgProductRepository implements IProductRepository {
   async findByPriceRange(minPrice: number, maxPrice: number): Promise<Product[]> {
     return this.repository.find({
       where: {
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice
-        }
+        price: Between(minPrice, maxPrice)
       }
     });
   }
