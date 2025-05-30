@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Product, CreateProductDTO, UpdateProductDTO } from '../../core/products/Product';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000/api';
 
 export class ProductApiService {
   private token: string | null = null;

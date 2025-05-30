@@ -1,14 +1,22 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { DataSource, Repository, Between } from 'typeorm';
 import { Product } from '../../../core/products/entities/Product';
 import { IProductRepository } from '../../../application/products/interfaces/IProductRepository';
-import { getRepository, Repository, Between } from 'typeorm';
 
 @injectable()
 export class PgProductRepository implements IProductRepository {
   private repository: Repository<Product>;
 
-  constructor() {
-    this.repository = getRepository(Product);
+  constructor(
+    // In a production app, you would inject the DataSource
+    // but for this example, we'll get it in the initialize method
+  ) {
+    // Repository will be initialized in the initialize method
+  }
+
+  // This method must be called after the repository is created
+  public initialize(dataSource: DataSource): void {
+    this.repository = dataSource.getRepository(Product);
   }
 
   async findAll(): Promise<Product[]> {
@@ -16,13 +24,13 @@ export class PgProductRepository implements IProductRepository {
   }
 
   async findById(id: string): Promise<Product | null> {
-    const product = await this.repository.findOne({ where: { id } });
-    return product || null;
+    const product = await this.repository.findOneBy({ id });
+    return product;
   }
 
   async findByName(name: string): Promise<Product | null> {
-    const product = await this.repository.findOne({ where: { name } });
-    return product || null;
+    const product = await this.repository.findOneBy({ name });
+    return product;
   }
 
   async findByPriceRange(minPrice: number, maxPrice: number): Promise<Product[]> {

@@ -1,4 +1,5 @@
 import { Container } from 'inversify';
+import { DataSource } from 'typeorm';
 import 'reflect-metadata';
 import { TYPES } from './types';
 
@@ -10,16 +11,31 @@ import { PgProductRepository } from '../../infrastructure/data/repositories/PgPr
 import { IProductService } from '../../application/products/interfaces/IProductService';
 import { ProductService } from '../../application/products/services/ProductService';
 
-// Create and configure container
-const container = new Container();
+// Controllers
+import { ProductController } from '../../presentation/products/ProductController';
 
-// Register repositories
-container.bind<IProductRepository>(TYPES.ProductRepository).to(PgProductRepository).inSingletonScope();
+// Create container function
+export function createContainer(dataSource: DataSource): Container {
+  const container = new Container();
 
-// Register services
-container.bind<IProductService>(TYPES.ProductService).to(ProductService).inSingletonScope();
+  // Register repositories
+  container.bind<IProductRepository>(TYPES.ProductRepository).to(PgProductRepository).inSingletonScope();
+  
+  // After binding the repository, we need to initialize it with the DataSource
+  const productRepository = container.get<PgProductRepository>(TYPES.ProductRepository);
+  productRepository.initialize(dataSource);
 
-// Other bindings would go here as the application grows
+  // Register services
+  container.bind<IProductService>(TYPES.ProductService).to(ProductService).inSingletonScope();
 
-export { container };
+  // Register controllers
+  container.bind<ProductController>(TYPES.ProductController).to(ProductController).inSingletonScope();
+
+  // Other bindings would go here as the application grows
+
+  return container;
+}
+
+// Export a default empty container for type hinting
+export const container = new Container();
 
