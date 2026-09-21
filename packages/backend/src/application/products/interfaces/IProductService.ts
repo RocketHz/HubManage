@@ -8,5 +8,6 @@ export interface IProductService {
   updateProduct(id: string, productDto: Partial<CreateProductDto>): Promise<Product | null>;
   deleteProduct(id: string): Promise<boolean>;
   searchProductsByPriceRange(minPrice: number, maxPrice: number): Promise<Product[]>;
+  updateProductStock(id: string, quantity: number): Promise<Product | null>;
 }
 

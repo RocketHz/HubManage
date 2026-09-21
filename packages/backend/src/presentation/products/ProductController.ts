@@ -105,5 +105,47 @@ export class ProductController {
       next(error);
     }
   };
+
+  findByPriceRange = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const minPrice = parseFloat(req.query.minPrice as string);
+      const maxPrice = parseFloat(req.query.maxPrice as string);
+
+      if (isNaN(minPrice) || isNaN(maxPrice)) {
+        res.status(400).json({ message: 'minPrice and maxPrice query parameters are required' });
+        return;
+      }
+
+      const products = await this.productService.searchProductsByPriceRange(minPrice, maxPrice);
+      res.status(200).json(products);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateProductStock = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const { quantity } = req.body;
+
+      const parsedQuantity = parseInt(quantity, 10);
+
+      if (isNaN(parsedQuantity) || parsedQuantity < 0) {
+        res.status(400).json({ message: 'quantity is required and must be a non-negative integer' });
+        return;
+      }
+
+      const product = await this.productService.updateProductStock(id, parsedQuantity);
+
+      if (!product) {
+        res.status(404).json({ message: 'Product not found' });
+        return;
+      }
+
+      res.status(200).json(product);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 

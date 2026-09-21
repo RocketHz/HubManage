@@ -43,5 +43,9 @@ export class ProductService implements IProductService {
   async searchProductsByPriceRange(minPrice: number, maxPrice: number): Promise<Product[]> {
     return this.productRepository.findByPriceRange(minPrice, maxPrice);
   }
+
+  async updateProductStock(id: string, quantity: number): Promise<Product | null> {
+    return this.productRepository.updateStock(id, quantity);
+  }
 }
 

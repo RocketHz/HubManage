@@ -2,20 +2,15 @@ import { inject, injectable } from 'inversify';
 import { DataSource, Repository, Between } from 'typeorm';
 import { Product } from '../../../core/products/entities/Product';
 import { IProductRepository } from '../../../application/products/interfaces/IProductRepository';
+import { TYPES } from '../../../shared/dependency-injection/types';
 
 @injectable()
 export class PgProductRepository implements IProductRepository {
   private repository: Repository<Product>;
 
   constructor(
-    // In a production app, you would inject the DataSource
-    // but for this example, we'll get it in the initialize method
+    @inject(TYPES.DataSource) dataSource: DataSource
   ) {
-    // Repository will be initialized in the initialize method
-  }
-
-  // This method must be called after the repository is created
-  public initialize(dataSource: DataSource): void {
     this.repository = dataSource.getRepository(Product);
   }
 

@@ -8,6 +8,7 @@ import routes from './presentation/routes';
 import { errorHandler, notFoundHandler } from './presentation/middlewares/errorHandler';
 import { createContainer } from './shared/dependency-injection/inversify.config';
 import { Container } from 'inversify';
+import { dataSourceOptions } from './infrastructure/data/config/data-source';
 import 'reflect-metadata';
 
 // Load environment variables
@@ -66,17 +67,10 @@ class App {
       
       // Create TypeORM DataSource
       this.dataSource = new DataSource({
-        type: 'postgres',
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT || '5432', 10),
-        username: process.env.DB_USERNAME || 'postgres',
-        password: process.env.DB_PASSWORD || 'postgres',
-        database: process.env.DB_DATABASE || 'hubmanage',
-        entities: [
-          __dirname + '/core/**/entities/*.{ts,js}'
-        ],
-        synchronize: process.env.NODE_ENV !== 'production',
-        logging: process.env.NODE_ENV !== 'production'
+        ...dataSourceOptions,
+        // In development, let TypeORM keep the schema in sync. Migrations still
+        // apply in production (synchronize:false).
+        synchronize: process.env.NODE_ENV !== 'production'
       });
       
       // Initialize the DataSource

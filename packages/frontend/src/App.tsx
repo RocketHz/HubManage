@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ProductListPage from './presentation/pages/ProductListPage';
+import TaskListPage from './presentation/pages/TaskListPage';
 
 const App: React.FC = () => {
   return (
@@ -25,17 +26,17 @@ const App: React.FC = () => {
             </ul>
           </nav>
         </header>
-        
+
         <main className="app-content">
           <Routes>
             <Route path="/" element={<div>Welcome to HubManage!</div>} />
             <Route path="/products" element={<ProductListPage />} />
-            <Route path="/tasks" element={<div>Task Dashboard (Coming Soon)</div>} />
+            <Route path="/tasks" element={<TaskListPage />} />
             <Route path="/users" element={<div>User Management (Coming Soon)</div>} />
             <Route path="*" element={<div>Page Not Found</div>} />
           </Routes>
         </main>
-        
+
         <footer className="app-footer">
           <p>&copy; {new Date().getFullYear()} HubManage. All rights reserved.</p>
         </footer>
@@ -45,4 +46,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

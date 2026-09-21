@@ -105,7 +105,7 @@ The frontend follows a similar clean architecture approach:
    npm run dev
    ```
 
-The API will be available at http://localhost:3000/api
+The API will be available at http://localhost:4000/api (configurable via `PORT` in `.env`).
 
 ### Frontend Setup
 
@@ -116,10 +116,10 @@ The API will be available at http://localhost:3000/api
 
 2. Start the development server:
    ```bash
-   npm start
+   npm run dev
    ```
 
-The web application will be available at http://localhost:3000
+The web application will be available at http://localhost:3000. The API base URL can be configured with the `VITE_API_URL` environment variable (see `packages/frontend/.env` if needed).
 
 ## Development Workflow
 

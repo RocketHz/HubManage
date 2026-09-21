@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { container } from '../../shared/dependency-injection/inversify.config';
-import { TYPES } from '../../shared/dependency-injection/types';
 
 interface TokenPayload {
   userId: string;
